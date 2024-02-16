@@ -1,0 +1,12 @@
+nav {
+    padding: 1em 2em;
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
+
+nav:nth-child(1) {
+    color: var(--tertiary-color);
+    font-size: 1.2em;
+    font-weight: 700;
+}
