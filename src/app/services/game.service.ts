@@ -3,6 +3,7 @@ import { environment } from '../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, fromEvent, map } from 'rxjs';
 import { ApiResultObject } from '../models';
+import { SubjectManager } from '../utils/subject-manager.utility';
 
 @Injectable({
   providedIn: 'root',
@@ -14,15 +15,18 @@ export class GameService {
   private currentChar = new BehaviorSubject('');
   private isCurrentCharWrong = new BehaviorSubject(false);
   private keydown = fromEvent<KeyboardEvent>(document, 'keydown');
+  private $isGameStartedSubject = new SubjectManager(false);
 
   constructor(private httpClient: HttpClient) {
     this.requestQuote();
 
     this.keydown.subscribe((e) => {
-      if (e.key === this.currentChar.getValue()) {
-        this.handleCorrectInput();
+      if (!this.$isGameStartedSubject.getSubjectValue()) {
+        this.startOnEnter(e);
+        return;
       } else {
-        this.setIsCurrentCharWrong(true);
+        if (e.key === this.currentChar.getValue()) this.handleCorrectInput();
+        else this.setIsCurrentCharWrong(true);
       }
     });
   }
@@ -45,6 +49,16 @@ export class GameService {
     if (this.isCurrentCharWrong.value) this.setIsCurrentCharWrong(false);
   }
 
+  startOnEnter(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.closeStartDialog();
+    }
+  }
+
+  closeStartDialog() {
+    this.$isGameStartedSubject.setSubject(true);
+  }
+
   // GETTERS
   getQuote(): Observable<string> {
     return this.quote.asObservable();
@@ -60,6 +74,10 @@ export class GameService {
 
   getIsCurrentCharWrong(): Observable<boolean> {
     return this.isCurrentCharWrong.asObservable();
+  }
+
+  getIsGameStartedSubject(): SubjectManager {
+    return this.$isGameStartedSubject;
   }
 
   // SETTERS

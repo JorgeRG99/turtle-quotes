@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { GameService } from '../../../../services/game.service';
 
 @Component({
   selector: 'app-start-panel',
@@ -8,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './start-panel.component.scss'
 })
 export class StartPanelComponent {
+  gameService = inject(GameService)
 
+  closeStartDialog() {
+    this.gameService.getIsGameStartedSubject().setSubject(true);
+  }
 }

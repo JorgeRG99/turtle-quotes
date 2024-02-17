@@ -1,4 +1,4 @@
 <section>
     <app-type-quote />
-    <app-start-panel />
+    <app-start-panel *ngIf="!(isGameStarted$ | async)" />
 </section>
