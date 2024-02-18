@@ -12,6 +12,6 @@ export class StartPanelComponent {
   gameService = inject(GameService)
 
   closeStartDialog() {
-    this.gameService.getIsGameStartedSubject().setSubject(true);
+    this.gameService.closeStartDialog()
   }
 }

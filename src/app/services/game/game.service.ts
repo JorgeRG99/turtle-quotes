@@ -38,6 +38,7 @@ export class GameService {
       .get<ApiResultObject[]>(this.apiUrl)
       .pipe(map((result) => result[0].content))
       .subscribe((quoteContent) => {
+        this.stats.setQuoteData(quoteContent.split(' '), this.right);
         this.setQuote(quoteContent.slice(1));
         this.setCurrentChar(quoteContent[0]);
       });
@@ -54,12 +55,12 @@ export class GameService {
   startOnEnter(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.closeStartDialog();
-      this.stats.start();
     }
   }
 
   closeStartDialog() {
     this.$isGameStartedSubject.setSubject(true);
+    this.stats.start();
   }
 
   // GETTERS
@@ -87,6 +88,14 @@ export class GameService {
     return this.stats.getTimer();
   }
 
+  getTotalWords(): Observable<number> {
+    return this.stats.getTotalWords();
+  }
+
+  getCompletedWords(): Observable<number> {
+    return this.stats.getCompletedWords();
+  }
+  
   // SETTERS
   setQuote(value: string): void {
     this.quote.next(value);

@@ -1,7 +1,6 @@
 <article>
     <div>
-        00
-        <!-- {{completedWords}}/{{remainingWords}} -->
+        {{completedWords | async}}/{{totalWords | async}}
     </div>
     <div>
         {{timer$ | async}}
