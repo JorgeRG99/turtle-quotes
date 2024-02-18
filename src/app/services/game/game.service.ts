@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, fromEvent, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, fromEvent, map } from 'rxjs';
 import { ApiResultObject } from '../../models';
 import { SubjectManager } from '../../utils/subject-manager.utility';
 import { StatsService } from '../stats/stats.service';
@@ -9,6 +9,7 @@ import { StatsService } from '../stats/stats.service';
 @Injectable({
   providedIn: 'root',
 })
+
 export class GameService {
   private apiUrl: string = environment.apiBaseUrl;
   private quote = new BehaviorSubject('');
@@ -16,13 +17,15 @@ export class GameService {
   private currentChar = new BehaviorSubject('');
   private isCurrentCharWrong = new BehaviorSubject(false);
   private keydown = fromEvent<KeyboardEvent>(document, 'keydown');
+  private keydownSubscription: Subscription; 
   private $isGameStartedSubject = new SubjectManager(false);
+  private $isGameEndedSubject = new SubjectManager(false);
   private stats = new StatsService();
 
   constructor(private httpClient: HttpClient) {
     this.requestQuote();
 
-    this.keydown.subscribe((e) => {
+    this.keydownSubscription = this.keydown.subscribe((e) => {
       if (!this.$isGameStartedSubject.getSubjectValue()) {
         this.startOnEnter(e);
         return;
@@ -50,6 +53,7 @@ export class GameService {
     this.setQuote(this.quote.value.slice(1));
 
     if (this.isCurrentCharWrong.value) this.setIsCurrentCharWrong(false);
+    if(!this.currentChar.value) this.finishGame();
   }
 
   startOnEnter(event: KeyboardEvent) {
@@ -61,6 +65,12 @@ export class GameService {
   closeStartDialog() {
     this.$isGameStartedSubject.setSubject(true);
     this.stats.start();
+  }
+
+  finishGame() {
+    this.keydownSubscription.unsubscribe();
+    this.$isGameEndedSubject.setSubject(true);
+    this.stats.stop();
   }
 
   // GETTERS

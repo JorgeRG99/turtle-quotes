@@ -1,0 +1,36 @@
+p {
+  font-size: 1.4em;
+  line-height: 2em;
+  text-align: justify;
+}
+
+span {
+  word-wrap: break-word;
+}
+
+#current-character {
+  position: relative;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.caret {
+  position: absolute;
+  bottom: 0;
+  left: -2px;
+  width: 3px;
+  height: 25px;
+  background-color: var(--tertiary-color);
+}
+
+.initial-quote {
+  color: var(--tertiary-color-light);
+}
+
+.right-quote {
+  color: var(--tertiary-color);
+}
+
+.wrong-character {
+  color: var(--error-color);
+}

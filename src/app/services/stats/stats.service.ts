@@ -1,9 +1,5 @@
-import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, takeUntil, timer } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class StatsService {
   private timerStop$ = new Subject<number>();
   private timer$ = new BehaviorSubject<number>(0);

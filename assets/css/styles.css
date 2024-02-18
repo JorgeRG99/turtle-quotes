@@ -1,0 +1,24 @@
+@font-face {
+  font-family: "Cascadia Code";
+  src: url("/assets/fonts/CascadiaMono.woff2") format("woff2");
+  font-style: normal;
+}
+:root {
+  --primary-color: #1c2052;
+  --secondary-color: #502570;
+  --secondary-color-light: #8651aba4;
+  --tertiary-color: #d27dd6;
+  --tertiary-color-light: #f0d9f1;
+  --error-color: #db0c0c;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: "Cascadia Code", monospace;
+}
+
+html {
+  background-color: #000000;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, #00091d 1px);
+}
