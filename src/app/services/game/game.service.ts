@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environments';
+import { environment } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, fromEvent, map } from 'rxjs';
-import { ApiResultObject } from '../models';
-import { SubjectManager } from '../utils/subject-manager.utility';
+import { ApiResultObject } from '../../models';
+import { SubjectManager } from '../../utils/subject-manager.utility';
 
 @Injectable({
   providedIn: 'root',

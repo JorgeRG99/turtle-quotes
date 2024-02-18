@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { GameService } from '../../../../services/game.service';
+import { GameService } from '../../../../services/game/game.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 

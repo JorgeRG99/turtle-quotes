@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { GameService } from '../../../../services/game.service';
+import { GameService } from '../../../../services/game/game.service';
 
 @Component({
   selector: 'app-start-panel',

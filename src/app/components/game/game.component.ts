@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TypeQuoteComponent } from './components/type-quote/type-quote.component';
 import { StartPanelComponent } from './components/start-panel/start-panel.component';
-import { GameService } from '../../services/game.service';
+import { GameService } from '../../services/game/game.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ControlPanelComponent } from './components/control-panel/control-panel.component';
