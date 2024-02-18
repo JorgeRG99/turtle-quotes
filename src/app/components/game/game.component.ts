@@ -4,11 +4,12 @@ import { StartPanelComponent } from './components/start-panel/start-panel.compon
 import { GameService } from '../../services/game.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ControlPanelComponent } from './components/control-panel/control-panel.component';
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [TypeQuoteComponent, StartPanelComponent, CommonModule],
+  imports: [TypeQuoteComponent, StartPanelComponent, CommonModule, ControlPanelComponent],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })

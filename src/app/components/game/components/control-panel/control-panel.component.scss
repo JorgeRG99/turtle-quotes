@@ -1,0 +1,10 @@
+article {
+    width: 45vw;
+    background-color: var(--secondary-color-light);
+    padding: .7em 1.2em;
+    font-size: .9em;
+    border-radius: .3em;
+    color: var(--tertiary-color-light);
+    display: flex;
+    justify-content: space-between;
+}
