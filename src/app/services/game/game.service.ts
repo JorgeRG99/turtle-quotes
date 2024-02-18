@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, fromEvent, map } from 'rxjs';
 import { ApiResultObject } from '../../models';
 import { SubjectManager } from '../../utils/subject-manager.utility';
+import { StatsService } from '../stats/stats.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,7 @@ export class GameService {
   private isCurrentCharWrong = new BehaviorSubject(false);
   private keydown = fromEvent<KeyboardEvent>(document, 'keydown');
   private $isGameStartedSubject = new SubjectManager(false);
+  private stats = new StatsService();
 
   constructor(private httpClient: HttpClient) {
     this.requestQuote();
@@ -52,6 +54,7 @@ export class GameService {
   startOnEnter(event: KeyboardEvent) {
     if (event.key === 'Enter') {
       this.closeStartDialog();
+      this.stats.start();
     }
   }
 
@@ -78,6 +81,10 @@ export class GameService {
 
   getIsGameStartedSubject(): SubjectManager {
     return this.$isGameStartedSubject;
+  }
+
+  getStatsTimer(): Observable<number> {
+    return this.stats.getTimer();
   }
 
   // SETTERS
