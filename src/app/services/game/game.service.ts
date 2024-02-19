@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
-import { ROUTES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   BehaviorSubject,
   Observable,
@@ -12,7 +12,6 @@ import {
 import { ApiResultObject } from '../../models';
 import { SubjectManager } from '../../utils/subject-manager.utility';
 import { StatsService } from '../stats/stats.service';
-import { routes } from '../../app.routes';
 import { APP_ROUTES } from '../../../config';
 
 @Injectable({
