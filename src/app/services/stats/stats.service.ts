@@ -1,4 +1,5 @@
 import { BehaviorSubject, Observable, Subject, takeUntil, timer } from 'rxjs';
+import { StatsObject } from '../../models';
 
 export class StatsService {
   private timerStop$ = new Subject<number>();
@@ -10,6 +11,7 @@ export class StatsService {
 
   constructor() {}
 
+  // ----------------- METHODS -----------------
   start(): void {
     timer(0, 1000)
       .pipe(takeUntil(this.timerStop$))
@@ -21,7 +23,20 @@ export class StatsService {
     this.timerStop$.complete();
   }
 
-  // GETTERS
+  generateStats(totalCharsTyped: number, totalErrors: number, totalSuccesses: number): StatsObject {
+    return {
+      wpm: Math.round(
+        (totalCharsTyped / 5 / this.timer$.value) * 60
+      ),
+      accuracy: `${((totalSuccesses/ totalCharsTyped) * 100).toFixed(2)}%`,
+      totalTime: `${this.timer$.value} seconds`,
+      totalErrors: totalErrors,
+      totalChars: totalCharsTyped,
+      errorRate: `${(totalErrors / totalCharsTyped * 100).toFixed(2)}%`,
+    };
+  }
+
+  // ----------------- GETTERS -----------------
   getTimer(): Observable<number> {
     return this.timer$.asObservable();
   }
@@ -34,7 +49,7 @@ export class StatsService {
     return this.completedWords$.asObservable();
   }
 
-  // SETTERS
+  // ----------------- SETTERS -----------------
   setQuoteData(value: string[], rightString$: Observable<string>): void {
     this.totalWordsNumber$.next(value.length);
     this.totalWords = value;

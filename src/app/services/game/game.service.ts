@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subscription, fromEvent, map } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subscription,
+  fromEvent,
+  map,
+} from 'rxjs';
 import { ApiResultObject } from '../../models';
 import { SubjectManager } from '../../utils/subject-manager.utility';
 import { StatsService } from '../stats/stats.service';
@@ -9,7 +15,6 @@ import { StatsService } from '../stats/stats.service';
 @Injectable({
   providedIn: 'root',
 })
-
 export class GameService {
   private apiUrl: string = environment.apiBaseUrl;
   private quote = new BehaviorSubject('');
@@ -17,9 +22,12 @@ export class GameService {
   private currentChar = new BehaviorSubject('');
   private isCurrentCharWrong = new BehaviorSubject(false);
   private keydown = fromEvent<KeyboardEvent>(document, 'keydown');
-  private keydownSubscription: Subscription; 
+  private keydownSubscription: Subscription;
   private $isGameStartedSubject = new SubjectManager(false);
   private $isGameEndedSubject = new SubjectManager(false);
+  private totalErrors = 0;
+  private totalSuccesses = 0;
+  private totalCharsTyped = 0;
   private stats = new StatsService();
 
   constructor(private httpClient: HttpClient) {
@@ -31,11 +39,16 @@ export class GameService {
         return;
       } else {
         if (e.key === this.currentChar.getValue()) this.handleCorrectInput();
-        else this.setIsCurrentCharWrong(true);
+        else if (e.key !== 'CapsLock' && e.key !== 'Shift') {
+          this.totalCharsTyped++;
+          this.totalErrors++;
+          this.setIsCurrentCharWrong(true);
+        }
       }
     });
   }
 
+  // ----------------- METHODS -----------------
   requestQuote(): void {
     this.httpClient
       .get<ApiResultObject[]>(this.apiUrl)
@@ -48,12 +61,16 @@ export class GameService {
   }
 
   handleCorrectInput() {
+    this.totalSuccesses++;
+    this.totalCharsTyped++;
     this.setRightPart(this.right.value + this.currentChar.value);
     this.setCurrentChar(this.quote.value[0]);
     this.setQuote(this.quote.value.slice(1));
 
-    if (this.isCurrentCharWrong.value) this.setIsCurrentCharWrong(false);
-    if(!this.currentChar.value) this.finishGame();
+    if (this.isCurrentCharWrong.value) {
+      this.setIsCurrentCharWrong(false);
+    }
+    if (!this.currentChar.value) this.finishGame();
   }
 
   startOnEnter(event: KeyboardEvent) {
@@ -73,7 +90,7 @@ export class GameService {
     this.stats.stop();
   }
 
-  // GETTERS
+  // ----------------- GETTERS -----------------
   getQuote(): Observable<string> {
     return this.quote.asObservable();
   }
@@ -105,8 +122,8 @@ export class GameService {
   getCompletedWords(): Observable<number> {
     return this.stats.getCompletedWords();
   }
-  
-  // SETTERS
+
+  // ----------------- SETTERS -----------------
   setQuote(value: string): void {
     this.quote.next(value);
   }
