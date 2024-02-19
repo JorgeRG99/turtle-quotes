@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
+import { ROUTES, Router } from '@angular/router';
 import {
   BehaviorSubject,
   Observable,
@@ -11,10 +12,13 @@ import {
 import { ApiResultObject } from '../../models';
 import { SubjectManager } from '../../utils/subject-manager.utility';
 import { StatsService } from '../stats/stats.service';
+import { routes } from '../../app.routes';
+import { APP_ROUTES } from '../../../config';
 
 @Injectable({
   providedIn: 'root',
 })
+
 export class GameService {
   private apiUrl: string = environment.apiBaseUrl;
   private quote = new BehaviorSubject('');
@@ -30,7 +34,7 @@ export class GameService {
   private totalCharsTyped = 0;
   private stats = new StatsService();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
     this.requestQuote();
 
     this.keydownSubscription = this.keydown.subscribe((e) => {
@@ -88,6 +92,7 @@ export class GameService {
     this.keydownSubscription.unsubscribe();
     this.$isGameEndedSubject.setSubject(true);
     this.stats.stop();
+    this.router.navigate([APP_ROUTES.STATS]);
   }
 
   // ----------------- GETTERS -----------------
