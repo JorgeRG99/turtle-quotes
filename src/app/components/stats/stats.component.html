@@ -1,8 +1,9 @@
 <section>
-    <span>{{statsResult.accuracy}} Accuracy</span>
-    <span>{{statsResult.wpm}} WPM</span>
-    <span>{{statsResult.errorRate}} Error Rate</span>
-    <span>{{statsResult.totalChars}} Total Characters</span>
-    <span>{{statsResult.totalTime}} Total Time Spend</span>
-    <span>{{statsResult.totalErrors}} Total Round Errors</span>
+    <div><span>{{ stats.wpm | number:'1.0-0' }}</span> WPM</div>
+    <div class="graph"></div>
+    <div><span>{{stats.errorRate | number:'1.0-0' }}%</span> Error Rate</div>
+    <div><span>{{stats.totalChars | number:'1.0-0' }}</span> Total Characters</div>
+    <div class="total-time"><span>{{stats.totalTime| number:'1.0-0' }}</span> Total Time</div>
+    <div><span>{{stats.totalErrors | number:'1.0-0' }}</span> Total Errors</div>
+    <div><span>{{stats.accuracy | number:'1.0-0' }}%</span> Accuracy</div>
 </section>

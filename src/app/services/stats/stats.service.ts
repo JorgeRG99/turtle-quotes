@@ -10,11 +10,11 @@ export class StatsService {
   private rightQuote$!: Observable<string>;
   private resultStats = new BehaviorSubject<StatsObject>({
     wpm: 0,
-    accuracy: '0%',
-    totalTime: '0 seconds',
+    accuracy: 0,
+    totalTime: 0,
     totalErrors: 0,
     totalChars: 0,
-    errorRate: '0%',
+    errorRate: 0,
   });
 
   constructor() {}
@@ -38,11 +38,11 @@ export class StatsService {
   ): void {    
     this.resultStats.next({
       wpm: Math.round((totalCharsTyped / 5 / this.timer$.value) * 60),
-      accuracy: `${((totalSuccesses / totalCharsTyped) * 100).toFixed(2)}%`,
-      totalTime: `${this.timer$.value} seconds`,
+      accuracy: parseInt(((totalSuccesses / totalCharsTyped) * 100).toFixed(2)),
+      totalTime: this.timer$.value,
       totalErrors: totalErrors,
       totalChars: totalCharsTyped,
-      errorRate: `${((totalErrors / totalCharsTyped) * 100).toFixed(2)}%`,
+      errorRate: parseInt(((totalErrors / totalCharsTyped) * 100).toFixed(2)),
     });
   }
 

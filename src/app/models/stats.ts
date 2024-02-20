@@ -1,8 +1,9 @@
 export interface StatsObject {
-    wpm: number,
-    accuracy: string,
-    totalTime: string,
-    totalErrors: number,
-    totalChars: number,
-    errorRate: string,
-  }
+  [key: string]: number;
+  wpm: number;
+  accuracy: number;
+  totalTime: number;
+  totalErrors: number;
+  totalChars: number;
+  errorRate: number;
+}

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { GameService } from '../../services/game/game.service';
 import { StatsObject } from '../../models';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription} from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -14,12 +14,35 @@ import { CommonModule } from '@angular/common';
 export class StatsComponent {
   gameService = inject(GameService);
   statsSuscription!: Subscription;
-  statsResult!: StatsObject;
+  stats: StatsObject = {
+    wpm: 0,
+    errorRate: 0,
+    accuracy: 0,
+    totalTime: 0,
+    totalChars: 0,
+    totalErrors: 0
+  }
+
+  async animateValue(target: number, duration: number, key:string) {
+    const increment = target / ((duration / 1000) * 60);
+    const intervalId = setInterval(() => {
+      if (this.stats[key] < target) {
+        this.stats[key] += increment;
+      } else {
+        clearInterval(intervalId);
+        this.stats[key] = target;
+      }
+    }, 1000 / 60);
+  }
 
   ngOnInit() {
     this.statsSuscription = this.gameService
       .getStatsResult()
-      .subscribe((stats: StatsObject) => this.statsResult = stats);
+      .subscribe((stats: StatsObject) => {        
+        Object.keys(stats).forEach((key: any) => {
+          this.animateValue(stats[key], 3000, key);
+        })
+      });
   }
 
   ngOnDestroy() {
