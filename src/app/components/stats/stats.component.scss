@@ -20,9 +20,25 @@ div {
     gap: .5em;
 }
 
-.total-time {
-    grid-column: 1 / 3;
-    grid-column: 2;
+button {
+    background-color: #000000;
+    background-image: radial-gradient(#ffffff33 1px, #00091d 1px);
+    font-size: .9em;
+    color: var(--tertiary-color);
+    border: none;
+    cursor: pointer;
+}
+
+.reload-container {
+    align-items: center;
+}
+
+.reload {
+    transition: transform 0.5s ease-in-out;
+}
+
+.reload-container:hover .reload {
+    transform: rotate(360deg);
 }
 
 .graph {

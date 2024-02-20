@@ -3,11 +3,12 @@ import { GameService } from '../../services/game/game.service';
 import { StatsObject } from '../../models';
 import { Subscription} from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ReloadComponent } from './components/reload/reload.component';
 
 @Component({
   selector: 'app-stats',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReloadComponent],
   templateUrl: './stats.component.html',
   styleUrl: './stats.component.scss',
 })
