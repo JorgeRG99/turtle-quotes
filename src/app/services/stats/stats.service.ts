@@ -8,6 +8,14 @@ export class StatsService {
   private completedWords$ = new BehaviorSubject<number>(0);
   private totalWords!: string[];
   private rightQuote$!: Observable<string>;
+  private resultStats = new BehaviorSubject<StatsObject>({
+    wpm: 0,
+    accuracy: '0%',
+    totalTime: '0 seconds',
+    totalErrors: 0,
+    totalChars: 0,
+    errorRate: '0%',
+  });
 
   constructor() {}
 
@@ -23,17 +31,19 @@ export class StatsService {
     this.timerStop$.complete();
   }
 
-  generateStats(totalCharsTyped: number, totalErrors: number, totalSuccesses: number): StatsObject {
-    return {
-      wpm: Math.round(
-        (totalCharsTyped / 5 / this.timer$.value) * 60
-      ),
-      accuracy: `${((totalSuccesses/ totalCharsTyped) * 100).toFixed(2)}%`,
+  generateStats(
+    totalCharsTyped: number,
+    totalErrors: number,
+    totalSuccesses: number
+  ): void {    
+    this.resultStats.next({
+      wpm: Math.round((totalCharsTyped / 5 / this.timer$.value) * 60),
+      accuracy: `${((totalSuccesses / totalCharsTyped) * 100).toFixed(2)}%`,
       totalTime: `${this.timer$.value} seconds`,
       totalErrors: totalErrors,
       totalChars: totalCharsTyped,
-      errorRate: `${(totalErrors / totalCharsTyped * 100).toFixed(2)}%`,
-    };
+      errorRate: `${((totalErrors / totalCharsTyped) * 100).toFixed(2)}%`,
+    });
   }
 
   // ----------------- GETTERS -----------------
@@ -47,6 +57,10 @@ export class StatsService {
 
   getCompletedWords(): Observable<number> {
     return this.completedWords$.asObservable();
+  }
+
+  getResults(): Observable<StatsObject> {
+    return this.resultStats.asObservable();
   }
 
   // ----------------- SETTERS -----------------

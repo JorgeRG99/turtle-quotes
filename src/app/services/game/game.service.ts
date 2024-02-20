@@ -9,7 +9,7 @@ import {
   fromEvent,
   map,
 } from 'rxjs';
-import { ApiResultObject } from '../../models';
+import { ApiResultObject, StatsObject } from '../../models';
 import { SubjectManager } from '../../utils/subject-manager.utility';
 import { StatsService } from '../stats/stats.service';
 import { APP_ROUTES } from '../../../config';
@@ -17,7 +17,6 @@ import { APP_ROUTES } from '../../../config';
 @Injectable({
   providedIn: 'root',
 })
-
 export class GameService {
   private apiUrl: string = environment.apiBaseUrl;
   private quote = new BehaviorSubject('');
@@ -88,6 +87,11 @@ export class GameService {
   }
 
   finishGame() {
+    this.stats.generateStats(
+      this.totalCharsTyped,
+      this.totalErrors,
+      this.totalSuccesses
+    );
     this.keydownSubscription.unsubscribe();
     this.$isGameEndedSubject.setSubject(true);
     this.stats.stop();
@@ -125,6 +129,10 @@ export class GameService {
 
   getCompletedWords(): Observable<number> {
     return this.stats.getCompletedWords();
+  }
+
+  getStatsResult(): Observable<StatsObject> {
+    return this.stats.getResults();
   }
 
   // ----------------- SETTERS -----------------
