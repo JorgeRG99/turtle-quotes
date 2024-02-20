@@ -3,7 +3,7 @@
     <div class="graph"></div>
     <div><span>{{stats.errorRate | number:'1.0-0' }}%</span> Error Rate</div>
     <div><span>{{stats.totalChars | number:'1.0-0' }}</span> Total Characters</div>
-    <div class="reload-container"><button class="reload"><app-reload /></button><button>Play Again</button></div>
+    <div class="reload-container"><button (click)="playAgain()" class="reload"><app-reload /></button><button (click)="playAgain()">Play Again</button></div>
     <div class="total-time"><span>{{stats.totalTime| number:'1.0-0' }}</span> Total Time</div>
     <div><span>{{stats.totalErrors | number:'1.0-0' }}</span> Total Errors</div>
     <div><span>{{stats.accuracy | number:'1.0-0' }}%</span> Accuracy</div>

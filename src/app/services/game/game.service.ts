@@ -98,6 +98,39 @@ export class GameService {
     this.router.navigate([APP_ROUTES.STATS]);
   }
 
+  resetGame() {
+    this.stats = new StatsService();
+    this.totalErrors = 0;
+    this.totalSuccesses = 0;
+    this.totalCharsTyped = 0;
+    this.apiUrl = environment.apiBaseUrl;
+    this.quote = new BehaviorSubject('');
+    this.right = new BehaviorSubject('');
+    this.currentChar = new BehaviorSubject('');
+    this.isCurrentCharWrong = new BehaviorSubject(false);
+    this.keydown = fromEvent<KeyboardEvent>(document, 'keydown');
+    this.$isGameStartedSubject = new SubjectManager(false);
+    this.$isGameEndedSubject = new SubjectManager(false);
+
+    this.requestQuote();
+
+    this.keydownSubscription = this.keydown.subscribe((e) => {
+      if (!this.$isGameStartedSubject.getSubjectValue()) {
+        this.startOnEnter(e);
+        return;
+      } else {
+        if (e.key === this.currentChar.getValue()) this.handleCorrectInput();
+        else if (e.key !== 'CapsLock' && e.key !== 'Shift') {
+          this.totalCharsTyped++;
+          this.totalErrors++;
+          this.setIsCurrentCharWrong(true);
+        }
+      }
+    });
+
+    this.router.navigate([APP_ROUTES.HOME]);
+  }
+
   // ----------------- GETTERS -----------------
   getQuote(): Observable<string> {
     return this.quote.asObservable();

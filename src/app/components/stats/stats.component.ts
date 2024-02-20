@@ -4,6 +4,7 @@ import { StatsObject } from '../../models';
 import { Subscription} from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ReloadComponent } from './components/reload/reload.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stats',
@@ -47,6 +48,12 @@ export class StatsComponent {
   }
 
   ngOnDestroy() {
-    if (this.statsSuscription) this.statsSuscription.unsubscribe();
+    if (this.statsSuscription) {
+      this.statsSuscription.unsubscribe()
+    };
+  }
+
+  playAgain() {
+    this.gameService.resetGame();
   }
 }
